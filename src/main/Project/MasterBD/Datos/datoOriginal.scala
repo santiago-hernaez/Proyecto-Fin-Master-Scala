@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode
   */
 object datoOriginal {
 
-  case class origen(val id_Tienda: Int,
+  case class original(val id_Tienda: Int,
                     val fecha: Int,
                     val metodoPago: String,
                     // Iterator used here due to array of Strings being received on the Json

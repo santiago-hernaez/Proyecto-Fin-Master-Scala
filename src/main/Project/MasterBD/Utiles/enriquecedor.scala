@@ -4,15 +4,15 @@ package MasterBD.Utiles
   * Objecto que enriquece el flujo original de JSON con datos obtenidos de Redis en base a un Id_Prenda e Id_Tienda
   */
 
-import MasterBD.Datos.datoOriginal.origen
-import MasterBD.Datos.datoEnriquecido.enriched
+import MasterBD.Datos.datoOriginal.original
+import MasterBD.Datos.datoEnriquecido.enriquecido
 import com.fasterxml.jackson.databind.JsonNode
 //REDIS:
 import scala.collection.JavaConversions._
 import redis.clients.jedis.Jedis
 
 object enriquecedor{
-  def enriquece (origen:origen):enriched = {
+  def enriquece (origen:original):enriquecido = {
     val id_tienda = origen.id_Tienda
     val prendas = new Array[String](4)
     val fecha = origen.fecha
@@ -48,7 +48,7 @@ object enriquecedor{
     val beneficio = jedis.hget(prenda, "ben").toDouble
 
     //Obtenemos la salida del Objeto.
-    new enriched(origen.fecha,
+    enriquecido(origen.fecha,
       origen.metodoPago,
       origen.id_Tienda,
       cadena.toString,
@@ -58,12 +58,13 @@ object enriquecedor{
       zona,
       prenda,
       precio,
+      beneficio,
       color,
       talla,
       nombre,
       modelo,
-      clase,
-      beneficio)
+      clase
+      )
 
   }
 
