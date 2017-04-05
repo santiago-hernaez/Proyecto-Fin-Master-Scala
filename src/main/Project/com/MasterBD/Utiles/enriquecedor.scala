@@ -1,11 +1,11 @@
-package MasterBD.Utiles
+package com.MasterBD.Utiles
 
 /**
   * Objecto que enriquece el flujo original de JSON con datos obtenidos de Redis en base a un Id_Prenda e Id_Tienda
   */
 
-import MasterBD.Datos.datoOriginal.original
-import MasterBD.Datos.datoEnriquecido.enriquecido
+import com.MasterBD.Datos.datoEnriquecido.enriquecido
+import com.MasterBD.Datos.datoOriginal.original
 import com.fasterxml.jackson.databind.JsonNode
 //REDIS:
 import scala.collection.JavaConversions._

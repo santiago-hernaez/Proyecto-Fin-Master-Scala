@@ -11,6 +11,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="scala-sdk-2.10.4" level="application" />
     <orderEntry type="library" name="Maven: org.apache.flink:flink-scala_2.10:1.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.flink:flink-core:1.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.flink:flink-annotations:1.2.0" level="project" />
@@ -92,6 +93,5 @@
     <orderEntry type="library" name="Maven: org.apache.commons:commons-pool2:2.4.2" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-log4j12:1.7.7" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.17" level="project" />
-    <orderEntry type="library" name="scala-sdk-2.10.4" level="application" />
   </component>
 </module>

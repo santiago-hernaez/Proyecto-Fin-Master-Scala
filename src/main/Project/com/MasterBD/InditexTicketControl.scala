@@ -1,4 +1,4 @@
-package MasterBD
+package com.MasterBD
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -18,8 +18,9 @@ package MasterBD
  * limitations under the License.
  */
 
-import MasterBD.Datos.datoOriginal.original
-import MasterBD.Utiles.Enricher
+import com.MasterBD.Datos.datoOriginal.original
+import com.MasterBD.Datos.datoEnriquecido.enriquecido
+import com.MasterBD.Utiles.Enricher
 //import MasterBD.Utiles.enriquecedor  <-- Antigua
 
 import java.util
@@ -36,7 +37,7 @@ object InditexTicketControl {
 
     // JSON received: {"metodoPago":"TarjetaRegalo","fecha":1491205741,"Prendas":["9382:51.08","10371:80.28"],"id_Tienda":4879}
 
-    def main(args: Array[String]) {
+    def main(args: Array[String]):Unit = {
 
         //Kafka Consumer creation
         val properties = new Properties()
@@ -64,6 +65,6 @@ object InditexTicketControl {
       .sum(1)*/
 
 
-        env.execute("Scala-Flink Ticket Controller")
+        env.execute("Scala-Flink Ticket Control")
     }
 }

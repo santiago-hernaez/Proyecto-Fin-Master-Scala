@@ -1,8 +1,8 @@
-package MasterBD.Utiles
+package com.MasterBD.Utiles
 
 import org.apache.flink.api.common.functions.RichFlatMapFunction
-import MasterBD.Datos.datoOriginal.original
-import MasterBD.Datos.datoEnriquecido.enriquecido
+import com.MasterBD.Datos.datoOriginal.original
+import com.MasterBD.Datos.datoEnriquecido.enriquecido
 import com.fasterxml.jackson.databind.JsonNode
 import org.apache.flink.util.Collector
 import org.apache.flink.configuration.Configuration
