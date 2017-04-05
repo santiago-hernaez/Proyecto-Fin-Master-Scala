@@ -1,0 +1,251 @@
+topic: inditex
+partitionKey: id_Tienda
+fields:
+  id_Tienda:
+    type: integer
+    min: 1
+    max: 7984    
+  fecha:
+    type: timestamp
+  metodoPago:
+    type: collection
+    values:
+      - Efectivo
+      - Efectivo
+      - Efectivo
+      - Tarjeta
+      - Tarjeta
+      - Tarjeta
+      - Tarjeta
+      - Tarjeta
+      - TarjetaRegalo
+      - App
+      - App
+      - Affinity
+  articulosComprados:
+    type: random
+    components:
+      -
+        Prendas:
+          type: array
+          components:
+            field1:
+              type: composition
+              separator: ':'
+              components: 
+                 - type: integer
+                   min: 7985
+                   max: 13384
+                 - type: double
+                   min: 0.99
+                   max: 199.99
+                   truncate: 100
+      -
+        Prendas:
+          type: array
+          components:
+            field1:
+              type: composition
+              separator: ':'
+              components: 
+                 - type: integer
+                   min: 7985
+                   max: 13384
+                 - type: double
+                   min: 0.99
+                   max: 199.99
+                   truncate: 100      -
+        Prendas:
+          type: array
+          components:
+            field1:
+              type: composition
+              separator: ':'
+              components: 
+                 - type: integer
+                   min: 7985
+                   max: 13384
+                 - type: double
+                   min: 0.99
+                   max: 199.99
+                   truncate: 100      -
+        Prendas:
+          type: array
+          components:
+            field1:
+              type: composition
+              separator: ':'
+              components: 
+                 - type: integer
+                   min: 7985
+                   max: 13384
+                 - type: double
+                   min: 0.99
+                   max: 199.99
+                   truncate: 100      -
+        Prendas:
+          type: array
+          components:
+            field1:
+              type: composition
+              separator: ':'
+              components: 
+                 - type: integer
+                   min: 7985
+                   max: 13384
+                 - type: double
+                   min: 0.99
+                   max: 199.99
+                   truncate: 100
+            field2:
+              type: composition
+              separator: ':'
+              components: 
+                 - type: integer
+                   min: 7985
+                   max: 13384
+                 - type: double
+                   min: 0.99
+                   max: 199.99
+                   truncate: 100
+
+      -
+        Prendas:
+          type: array
+          components:
+            field1:
+              type: composition
+              separator: ':'
+              components: 
+                 - type: integer
+                   min: 7985
+                   max: 13384
+                 - type: double
+                   min: 0.99
+                   max: 199.99
+                   truncate: 100
+            field2:
+              type: composition
+              separator: ':'
+              components: 
+                 - type: integer
+                   min: 7985
+                   max: 13384
+                 - type: double
+                   min: 0.99
+                   max: 199.99
+                   truncate: 100
+      -
+        Prendas:
+          type: array
+          components:
+            field1:
+              type: composition
+              separator: ':'
+              components: 
+                 - type: integer
+                   min: 7985
+                   max: 13384
+                 - type: double
+                   min: 0.99
+                   max: 199.99
+                   truncate: 100
+            field2:
+              type: composition
+              separator: ':'
+              components: 
+                 - type: integer
+                   min: 7985
+                   max: 13384
+                 - type: double
+                   min: 0.99
+                   max: 199.99
+                   truncate: 100
+      -
+        Prendas:
+          type: array
+          components:
+            field1:
+              type: composition
+              separator: ':'
+              components: 
+                 - type: integer
+                   min: 7985
+                   max: 13384
+                 - type: double
+                   min: 0.99
+                   max: 199.99
+                   truncate: 100
+            field2:
+              type: composition
+              separator: ':'
+              components: 
+                 - type: integer
+                   min: 7985
+                   max: 13384
+                 - type: double
+                   min: 0.99
+                   max: 199.99
+                   truncate: 100
+            field3:
+              type: composition
+              separator: ':'
+              components: 
+                 - type: integer
+                   min: 7985
+                   max: 13384
+                 - type: double
+                   min: 0.99
+                   max: 199.99
+                   truncate: 100
+
+      -
+        Prendas:
+          type: array
+          components:
+            field1:
+              type: composition
+              separator: ':'
+              components: 
+                 - type: integer
+                   min: 7985
+                   max: 13384
+                 - type: double
+                   min: 0.99
+                   max: 199.99
+                   truncate: 100
+            field2:
+              type: composition
+              separator: ':'
+              components: 
+                 - type: integer
+                   min: 7985
+                   max: 13384
+                 - type: double
+                   min: 0.99
+                   max: 199.99
+                   truncate: 100
+            field3:
+              type: composition
+              separator: ':'
+              components: 
+                 - type: integer
+                   min: 7985
+                   max: 13384
+                 - type: double
+                   min: 0.99
+                   max: 199.99
+                   truncate: 100
+            field4:
+              type: composition
+              separator: ':'
+              components: 
+                 - type: integer
+                   min: 7985
+                   max: 13384
+                 - type: double
+                   min: 0.99
+                   max: 199.99
+                   truncate: 100
+
+	
