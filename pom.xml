@@ -26,8 +26,8 @@ under the License.
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>Santiago Hernaez</name>
-	<url></url>
+	<name>InditexTicketControl</name>
+	<url>https://github.com/santiago-hernaez/Proyecto-Fin-Master-Scala</url>
 
 	<repositories>
 		<repository>
@@ -49,7 +49,8 @@ under the License.
 		<flink.version>1.2.0</flink.version>
 		<slf4j.version>1.7.7</slf4j.version>
 		<log4j.version>1.2.17</log4j.version>
-        <scala.version>2.12.1</scala.version>
+        <!--<scala.version>2.12.1</scala.version>-->
+        <scala.version>2.10.4</scala.version>
 	</properties>
 
 	<!-- 
@@ -109,7 +110,14 @@ under the License.
             <artifactId>jedis</artifactId>
             <version>2.9.0</version>
             <type>jar</type>
-            <scope>compile</scope>
+           <!-- <scope>compile</scope>-->
+        </dependency>
+
+<!-- AQUI se AÑADE -->
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>2.10.4</version>
         </dependency>
 
 		<!-- explicitly add a standard loggin framework, as Flink does not (in the future) have
@@ -170,7 +178,7 @@ under the License.
 			<build>
 				<plugins>
 					<!-- disable the exclusion rules -->
-					<plugin>
+                    <plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-shade-plugin</artifactId>
 						<version>2.4.1</version>
@@ -309,13 +317,13 @@ under the License.
 							</filters>
 							<!-- If you want to use ./bin/flink run <quickstart jar> uncomment the following lines.
 							This will add a Main-Class entry to the manifest file -->
-							<!--
+
 							<transformers>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>Scala.StreamingJob</mainClass>
+									<mainClass>project.com.masterbd.InditexTicketControl</mainClass>
 								</transformer>
 							</transformers>
-						    -->
+
 							<createDependencyReducedPom>false</createDependencyReducedPom>
 						</configuration>
 					</execution>
@@ -410,22 +418,6 @@ under the License.
 					</execution>
 				</executions>
 			</plugin>
-			<!--
-			CODIGO METIDO PARA DETERMINAR LA MAIN CLASS SIN TENER QUE DEFINIRLA EN COMPILACION
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<archive>
-                        <manifestEntries>
-                            <mainClass>com.MasterBD.InditexTicketControl</mainClass>
-                        </manifestEntries>
-                    </archive>
-				</configuration>
-			</plugin>
-            -->
 		</plugins>
 	</build>
 </project>
