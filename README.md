@@ -5,6 +5,7 @@
 The data is originated by means of Json:Synthetic Producer : https://github.com/redBorder/synthetic-producer
 
 Configuration file may be found in Proyecto-Fin-Master-Scala/src/main/Files/inditex.yml
+
 The JSON entry format is as follows:
  ```scala
  {"id_tienda":1234,"fecha":123456789,"metodoPago":"tarjeta","articulosComprados":[12345:12.95,12346:128.45]}
