@@ -15,7 +15,7 @@ fecha : Timestamp
 
 metodoPago: Payment method used on the purchase (Credit card, cash, gift card, app or affinity card)
 
-articulosComprados : array of purchased items with format [id : price, id:price,...] The id is used to access Redis and enrich data with clothing color, size, name, model, type and benefit.
+articulosComprados : array of purchased items with format [id : price, id : price, ...]. The id is used to access Redis and enrich data with clothing color, size, name, model, type and benefit.
 
 ### Prerequisites:
 
@@ -23,9 +23,9 @@ Kafka server and Redis server must be installed and running previous to starting
 
 Kafka installation and configuration available on https://kafka.apache.org/quickstart
 
-Redis installation and configuration guides on https://redis.io/download and https://redis.io/documentation
+Redis installation and configuration guides are available on https://redis.io/download
 
-Redis .dmp file with Shop list and Clothing database is available on Proyecto-Fin-Master-Scala/src/main/Files/dump.rdb
+Redis .dmp file with Store list and Clothing database is available on Proyecto-Fin-Master-Scala/src/main/Files/dump.rdb
 
 ### Installation
 
