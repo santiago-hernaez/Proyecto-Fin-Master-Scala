@@ -3,6 +3,7 @@
 ### Data origin
 
 The data is originated by means of Json:Synthetic Producer : https://github.com/redBorder/synthetic-producer
+
 Configuration file may be found in Proyecto-Fin-Master-Scala/src/main/Files/inditex.yml
 The JSON entry format is as follows:
  ```scala
