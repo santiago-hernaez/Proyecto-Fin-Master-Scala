@@ -20,7 +20,16 @@ articulosComprados : array of purchased items with format [id : price, id : pric
 
 ### Prerequisites:
 
-Kafka server and Redis server must be installed and running previous to starting flink.
+* Flink compatible OS
+* Java (version 8)
+* Scala (version 2.12.1)
+* Apache Flink (version 1.2)
+* Apache Kafka (version 0.10.1.1)
+* Redis (version 3.2.8)
+* Apache Hbase (version 1.2)
+* Maven (version 3.3.9) (only for building)
+
+Kafka server, Redis server and Hbase server must be installed and running previous to starting flink.
 
 Kafka installation and configuration available on https://kafka.apache.org/quickstart
 
@@ -28,18 +37,22 @@ Redis installation and configuration guides are available on https://redis.io/do
 
 Redis .dmp file with Store list and Clothing database is available on Proyecto-Fin-Master-Scala/src/main/Files/dump.rdb
 
-### Installation
+Hbase installation and configuration guides are available on https://hbase.apache.org/index.html
+
+### Build library
 
 Clone or download repository and compile with:
-
+```shell
+git clone https://github.com/santiago-hernaez/Proyecto-Fin-Master-Scala.git
+cd Proyecto-Fin-Master-Scala
 mvn clean package -Pbuild-jar
-
-After successful compilation, start Flink cluster with:
-../flink-1.2/bin/start-local.sh
-
-And run compiled jar with:
-flink run ./target/jarName.jar 
-
+<Flink-installation-folder>/bin/start-local.sh
+<Flink-instalation-folder>/bin/flink run <Job-package-path>/target/Flink-1.0-SNAPSHOT.jar
+```
+Example:
+```shell
+/opt/flink-1.2/bin/flink run target/Flink-1.0-SNAPSHOT.jar
+```
 ### Documentation
 
 This project has been developed using v1.2.0 https://ci.apache.org/projects/flink/flink-docs-release-1.2/
