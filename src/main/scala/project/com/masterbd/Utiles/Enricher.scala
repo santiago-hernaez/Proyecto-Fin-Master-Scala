@@ -13,20 +13,21 @@ import scala.collection.JavaConversions._
 import redis.clients.jedis.Jedis
 
 /**
-  * Created by sam on 5/04/17.
+  * Enricher class to enrich original Json with info from Redis Database.
   */
 
 class Enricher extends RichFlatMapFunction[original,enriquecido] {
 
   var jedis : Jedis = _
-
+  var i=0
   override def open(parameters: Configuration): Unit = {
-    //abrimos JEDIS
+    //Open JEDIS
     jedis = new Jedis("localhost")
-  }
+
+    }
 
   override def close():Unit = {
-    //cerramos JEDIS
+    //Close JEDIS
     jedis.quit()
   }
 
@@ -39,24 +40,24 @@ class Enricher extends RichFlatMapFunction[original,enriquecido] {
     var pr: JsonNode = null
 
 
-    //Creamos un Iterador con el Parse de prendas del JSON
+    //Iterator creation with the JSON Parse of the clothes array
     val it = origen.prendas
     var num_prendas: Int = 0
-    //metemos cada una de las prendas del Json en un array de Strings del tipo ["id_prenda:precio","id_prenda:precio",...]
+    //each og the JSON clothes is entered on an array like ["id_prenda:precio","id_prenda:precio",...]
     while (it.hasNext) {
       pr = it.next()
       prendas(num_prendas) = pr.asText()
       num_prendas += 1
     }
 
-    //datos de tienda
+    //Store data
     val cadena = jedis.hget(id_tienda.toString, "cadena")
     val sexo = jedis.hget(id_tienda.toString, "sexo")
     val pais = jedis.hget(id_tienda.toString, "pais")
     val region = jedis.hget(id_tienda.toString, "region")
     val zona = jedis.hget(id_tienda.toString, "zona")
 
-    //datos de prenda.Sacaremos una prenda por cada elemento del array de prendas.
+    //clothes data. We pull one set of values for each element on the clothes array.
     for (x <- 0 until (num_prendas-1)) {
       val prenda = prendas(x).split(":")(0)
       val precio = prendas(x).split(":")(1).toDouble
@@ -67,7 +68,9 @@ class Enricher extends RichFlatMapFunction[original,enriquecido] {
       val modelo = jedis.hget(prenda, "modelo")
       val clase = jedis.hget(prenda, "clase")
 
-      //Obtenemos la salida del Objeto.Con la tienda y la prenda
+      //Set the enriched object with the obtained data.
+      i+=1
+      println (i)
       out.collect(enriquecido.apply(
         fecha,
         metodoPago,

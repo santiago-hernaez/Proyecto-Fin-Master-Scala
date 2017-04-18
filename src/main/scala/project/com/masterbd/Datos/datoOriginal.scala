@@ -5,7 +5,7 @@ import java.util.Iterator
 import com.fasterxml.jackson.databind.JsonNode
 
 /**
-  * Created by sam on 3/04/17.
+  * Original object received through JSON.
   */
 object datoOriginal {
 

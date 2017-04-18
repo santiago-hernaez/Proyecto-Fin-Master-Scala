@@ -21,7 +21,7 @@ package project.com.masterbd
 import project.com.masterbd.Datos.datoOriginal.original
 import project.com.masterbd.Datos.datoEnriquecido.enriquecido
 import project.com.masterbd.Utiles.Enricher
-//import masterbd.Utiles.enriquecedor  <-- Antigua
+import project.com.masterbd.Utiles.toHbase
 
 import java.util
 import java.util.Properties
@@ -30,14 +30,14 @@ import org.apache.flink.streaming.api.scala._
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer010
 import org.apache.flink.streaming.util.serialization.JSONDeserializationSchema
 
+
+
 import com.fasterxml.jackson.databind.node.ObjectNode
 
 
 object InditexTicketControl extends App{
 
     // JSON received: {"metodoPago":"TarjetaRegalo","fecha":1491205741,"Prendas":["9382:51.08","10371:80.28"],"id_Tienda":4879}
-
-    //def main(args: Array[String]):Unit = {
 
         //Kafka Consumer creation
         val properties = new Properties()
@@ -51,15 +51,18 @@ object InditexTicketControl extends App{
         //Start Parse and Enrich process.
 
          val streamEnriquecido = stream
-           //Parsea el Json de entrada a sus variables primitivas
+           //Parse the entry Json to its primitives
            .map(r => original(r.get("id_Tienda").asInt(),r.get("fecha").asInt(),r.get("metodoPago").asText(),r.get("Prendas").elements()))
 
-           //enriquece el origen con los datos de Redis.
+           //Enriches Json with Redis Data.
            .flatMap(new Enricher())
 
-           .print()
+           //.print()
 
-        /*.flatMap { _.toLowerCase.split("\\W+") filter { _.nonEmpty } }
+        //Save enriched data to Hbase.
+        streamEnriquecido.writeUsingOutputFormat(new toHbase())
+
+      /*.flatMap { _.toLowerCase.split("\\W+") filter { _.nonEmpty } }
       .map { (_, 1) }
       .keyBy(0)
       .sum(1)*/

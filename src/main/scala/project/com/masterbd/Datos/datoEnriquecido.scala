@@ -1,7 +1,7 @@
 package project.com.masterbd.Datos
 
 /**
-  * Created by sam on 3/04/17.
+  * Enriched object with Redis data.
   */
 object datoEnriquecido {
     case class enriquecido (
