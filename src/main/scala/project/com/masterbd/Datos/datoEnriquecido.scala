@@ -5,9 +5,11 @@ package project.com.masterbd.Datos
   */
 object datoEnriquecido {
     case class enriquecido (
-                        val fecha : Int,
+                        val destino: String,
+                        val id_transaccion: Int,
+                        val fecha : String,
                         val metodoPago: String,
-                        val id_tienda:Int,
+                        val id_tienda:String,
                         val cadena : String,
                         val sexo: String,
                         val pais: String,

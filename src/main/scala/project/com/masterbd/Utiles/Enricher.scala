@@ -1,10 +1,12 @@
 package project.com.masterbd.Utiles
 
+import java.text.{DateFormat, SimpleDateFormat}
+import java.util.Date
+
 import org.apache.flink.api.common.functions.RichFlatMapFunction
 import com.fasterxml.jackson.databind.JsonNode
 import org.apache.flink.util.Collector
 import org.apache.flink.configuration.Configuration
-
 import project.com.masterbd.Datos.datoEnriquecido.enriquecido
 import project.com.masterbd.Datos.datoOriginal.original
 
@@ -33,9 +35,18 @@ class Enricher extends RichFlatMapFunction[original,enriquecido] {
 
   override def flatMap(in:(original),out:Collector[enriquecido]): Unit= {
     val origen: original = in
-    val id_tienda = origen.id_Tienda
+    val destino = "inditexTable"
+    val id_transaccion = origen.id_transaction
+    val id_tienda = origen.id_Tienda.toString()
     val prendas = new Array[String](4)
-    val fecha = origen.fecha
+    //  new SimpleDateFormat("yyyy-MM-dd HH:mm").format(dat)
+
+    val fechaOriginal = new Date(origen.fecha*1000L).toString()
+    var formatter: DateFormat = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy")
+    var dat = formatter.parse(fechaOriginal)
+    val fecha = new SimpleDateFormat("yyyy/MM/dd HH:mm").format(dat)
+
+
     val metodoPago = origen.metodoPago
     var pr: JsonNode = null
 
@@ -51,11 +62,11 @@ class Enricher extends RichFlatMapFunction[original,enriquecido] {
     }
 
     //Store data
-    val cadena = jedis.hget(id_tienda.toString, "cadena")
-    val sexo = jedis.hget(id_tienda.toString, "sexo")
-    val pais = jedis.hget(id_tienda.toString, "pais")
-    val region = jedis.hget(id_tienda.toString, "region")
-    val zona = jedis.hget(id_tienda.toString, "zona")
+    val cadena = jedis.hget(id_tienda, "cadena")
+    val sexo = jedis.hget(id_tienda, "sexo")
+    val pais = jedis.hget(id_tienda, "pais")
+    val region = jedis.hget(id_tienda, "region")
+    val zona = jedis.hget(id_tienda, "zona")
 
     //clothes data. We pull one set of values for each element on the clothes array.
     for (x <- 0 until (num_prendas-1)) {
@@ -69,9 +80,10 @@ class Enricher extends RichFlatMapFunction[original,enriquecido] {
       val clase = jedis.hget(prenda, "clase")
 
       //Set the enriched object with the obtained data.
-      i+=1
-      println (i)
+
       out.collect(enriquecido.apply(
+        destino,
+        id_transaccion,
         fecha,
         metodoPago,
         id_tienda,
