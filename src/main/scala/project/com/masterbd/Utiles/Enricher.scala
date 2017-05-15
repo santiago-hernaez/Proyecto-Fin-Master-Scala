@@ -35,16 +35,16 @@ class Enricher extends RichFlatMapFunction[original,enriquecido] {
 
   override def flatMap(in:(original),out:Collector[enriquecido]): Unit= {
     val origen: original = in
-    val destino = "inditexTable"
-    val id_transaccion = origen.id_transaction
+    val destino = "INDITEXTABLE"
+
     val id_tienda = origen.id_Tienda.toString()
     val prendas = new Array[String](4)
-    //  new SimpleDateFormat("yyyy-MM-dd HH:mm").format(dat)
 
     val fechaOriginal = new Date(origen.fecha*1000L).toString()
     var formatter: DateFormat = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy")
     var dat = formatter.parse(fechaOriginal)
-    val fecha = new SimpleDateFormat("yyyy/MM/dd HH:mm").format(dat)
+    val fecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss[.SSSSSSSSS]").format(dat)
+
 
 
     val metodoPago = origen.metodoPago
@@ -54,7 +54,7 @@ class Enricher extends RichFlatMapFunction[original,enriquecido] {
     //Iterator creation with the JSON Parse of the clothes array
     val it = origen.prendas
     var num_prendas: Int = 0
-    //each og the JSON clothes is entered on an array like ["id_prenda:precio","id_prenda:precio",...]
+    //each of the JSON clothes is entered on an array like ["id_prenda:precio","id_prenda:precio",...]
     while (it.hasNext) {
       pr = it.next()
       prendas(num_prendas) = pr.asText()
@@ -70,6 +70,7 @@ class Enricher extends RichFlatMapFunction[original,enriquecido] {
 
     //clothes data. We pull one set of values for each element on the clothes array.
     for (x <- 0 until (num_prendas-1)) {
+      val id_transaccion = origen.id_transaction*10+x
       val prenda = prendas(x).split(":")(0)
       val precio = prendas(x).split(":")(1).toDouble
       val beneficio: Double = jedis.hget(prenda, "ben").toDouble

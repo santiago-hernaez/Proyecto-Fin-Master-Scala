@@ -7,6 +7,7 @@ package project.com.masterbd.Utiles;
          import org.apache.flink.configuration.Configuration;
          import org.apache.flink.streaming.api.datastream.DataStream;
          import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+         import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
          import org.apache.flink.streaming.api.functions.source.SourceFunction;
          import org.apache.hadoop.hbase.HBaseConfiguration;
          import org.apache.hadoop.hbase.HTableDescriptor;
@@ -28,7 +29,7 @@ package project.com.masterbd.Utiles;
 
 
     public class toHbase implements OutputFormat<datoEnriquecido.enriquecido> {
-
+    //public class toHbase implements RichSinkFunction <datoEnriquecido.enriquecido> {
         private org.apache.hadoop.conf.Configuration conf = null;
         private HTable inditexTable;
         private HTable ventasPorTienda;
@@ -55,12 +56,12 @@ package project.com.masterbd.Utiles;
             //Table ventasPorTienda = connection.getTable(TableName.valueOf("ventasPorTienda"));
            //inditexTable is a table created on Hbase previously
             //TODO: Cambiar el HTable por la nueva sintaxis. Probar si vale para varias tablas...
-            inditexTable = new HTable(conf, "inditexTable");
-            ventasPorTienda = new HTable(conf, "ventasPorTienda");
-            ventasPorCadena = new HTable(conf, "ventasPorCadena");
-            ventasPorZona = new HTable(conf, "ventasPorZona");
-            topPrendas = new HTable(conf, "topPrendas");
-            topColores = new HTable (conf, "topColores");
+            inditexTable = new HTable(conf, "INDITEXTABLE");
+            ventasPorTienda = new HTable(conf, "VENTASPORTIENDA");
+            ventasPorCadena = new HTable(conf, "VENTASPORCADENA");
+            ventasPorZona = new HTable(conf, "VENTASPORZONA");
+            topPrendas = new HTable(conf, "TOPPRENDAS");
+            topColores = new HTable (conf, "TOPCOLORES");
             this.taskNumber = String.valueOf(taskNumber);
         }
 
@@ -81,39 +82,39 @@ package project.com.masterbd.Utiles;
                     put = new Put(Bytes.toBytes(record.cadena() + record.id_transaccion()));
 
                     //columnFamily,column,value
-                    put.addColumn(D, Bytes.toBytes("id_transaccion"),
+                    put.addColumn(D, Bytes.toBytes("ID_TRANSACCION"),
                             Bytes.toBytes(record.id_transaccion()));
-                    put.addColumn(D, Bytes.toBytes("metodoPago"),
+                    put.addColumn(D, Bytes.toBytes("METODOPAGO"),
                             Bytes.toBytes(record.metodoPago()));
-                    put.addColumn(D, Bytes.toBytes("fecha"),
+                    put.addColumn(D, Bytes.toBytes("FECHA"),
                             Bytes.toBytes(record.fecha()));
-                    put.addColumn(T, Bytes.toBytes("id_tienda"),
+                    put.addColumn(T, Bytes.toBytes("ID_TIENDA"),
                             Bytes.toBytes(record.id_tienda()));
-                    put.addColumn(T, Bytes.toBytes("cadena"),
+                    put.addColumn(T, Bytes.toBytes("CADENA"),
                             Bytes.toBytes(record.cadena()));
-                    put.addColumn(T, Bytes.toBytes("sexo"),
+                    put.addColumn(T, Bytes.toBytes("SEXO"),
                             Bytes.toBytes(record.sexo()));
-                    put.addColumn(T, Bytes.toBytes("pais"),
+                    put.addColumn(T, Bytes.toBytes("PAIS"),
                             Bytes.toBytes(record.pais()));
-                    put.addColumn(T, Bytes.toBytes("region"),
+                    put.addColumn(T, Bytes.toBytes("REGION"),
                             Bytes.toBytes(record.region()));
-                    put.addColumn(T, Bytes.toBytes("zona"),
+                    put.addColumn(T, Bytes.toBytes("ZONA"),
                             Bytes.toBytes(record.zona()));
-                    put.addColumn(P, Bytes.toBytes("id_prenda"),
+                    put.addColumn(P, Bytes.toBytes("ID_PRENDA"),
                             Bytes.toBytes(record.id_prenda()));
-                    put.addColumn(P, Bytes.toBytes("precio"),
+                    put.addColumn(P, Bytes.toBytes("PRECIO"),
                             Bytes.toBytes(record.precio()));
-                    put.addColumn(P, Bytes.toBytes("beneficio"),
+                    put.addColumn(P, Bytes.toBytes("BENEFICIO"),
                             Bytes.toBytes(record.beneficio()));
-                    put.addColumn(P, Bytes.toBytes("color"),
+                    put.addColumn(P, Bytes.toBytes("COLOR"),
                             Bytes.toBytes(record.color()));
-                    put.addColumn(P, Bytes.toBytes("talla"),
+                    put.addColumn(P, Bytes.toBytes("TALLA"),
                             Bytes.toBytes(record.talla()));
-                    put.addColumn(P, Bytes.toBytes("nombre"),
+                    put.addColumn(P, Bytes.toBytes("NOMBRE"),
                             Bytes.toBytes(record.nombre()));
-                    put.addColumn(P, Bytes.toBytes("modelo"),
+                    put.addColumn(P, Bytes.toBytes("MODELO"),
                             Bytes.toBytes(record.modelo()));
-                    put.addColumn(P, Bytes.toBytes("clase"),
+                    put.addColumn(P, Bytes.toBytes("CLASE"),
                             Bytes.toBytes(record.clase()));
 
                     inditexTable.put(put);
@@ -125,21 +126,21 @@ package project.com.masterbd.Utiles;
                     put = new Put(Bytes.toBytes(record.cadena() + record.id_tienda()));
 
                     //columnFamily,column,value
-                    put.addColumn(data, Bytes.toBytes("fecha"),
+                    put.addColumn(data, Bytes.toBytes("FECHA"),
                             Bytes.toBytes(record.fecha()));
-                    put.addColumn(data, Bytes.toBytes("id_tienda"),
+                    put.addColumn(data, Bytes.toBytes("ID_TIENDA"),
                             Bytes.toBytes(record.id_tienda()));
-                    put.addColumn(data, Bytes.toBytes("cadena"),
+                    put.addColumn(data, Bytes.toBytes("CADENA"),
                             Bytes.toBytes(record.cadena()));
-                    put.addColumn(data, Bytes.toBytes("sexo"),
+                    put.addColumn(data, Bytes.toBytes("SEXO"),
                             Bytes.toBytes(record.sexo()));
-                    put.addColumn(data, Bytes.toBytes("pais"),
+                    put.addColumn(data, Bytes.toBytes("PAIS"),
                             Bytes.toBytes(record.pais()));
-                    put.addColumn(data, Bytes.toBytes("region"),
+                    put.addColumn(data, Bytes.toBytes("REGION"),
                             Bytes.toBytes(record.region()));
-                    put.addColumn(data, Bytes.toBytes("zona"),
+                    put.addColumn(data, Bytes.toBytes("ZONA"),
                             Bytes.toBytes(record.zona()));
-                    put.addColumn(data, Bytes.toBytes("total"),
+                    put.addColumn(data, Bytes.toBytes("TOTAL"),
                             Bytes.toBytes(record.precio()));
 
                     ventasPorTienda.put(put);
@@ -152,11 +153,11 @@ package project.com.masterbd.Utiles;
                     put = new Put(Bytes.toBytes(fechaRow + record.cadena()));
 
                     //columnFamily,column,value
-                    put.addColumn(data, Bytes.toBytes("fecha"),
+                    put.addColumn(data, Bytes.toBytes("FECHA"),
                             Bytes.toBytes(record.fecha()));
-                    put.addColumn(data, Bytes.toBytes("cadena"),
+                    put.addColumn(data, Bytes.toBytes("CADENA"),
                             Bytes.toBytes(record.cadena()));
-                    put.addColumn(data, Bytes.toBytes("total"),
+                    put.addColumn(data, Bytes.toBytes("TOTAL"),
                             Bytes.toBytes(record.precio()));
 
                     ventasPorCadena.put(put);
@@ -170,11 +171,11 @@ package project.com.masterbd.Utiles;
                     put = new Put(Bytes.toBytes(fechaRow + record.zona()));
 
                     //columnFamily,column,value
-                    put.addColumn(data, Bytes.toBytes("fecha"),
+                    put.addColumn(data, Bytes.toBytes("FECHA"),
                             Bytes.toBytes(record.fecha()));
-                    put.addColumn(data, Bytes.toBytes("zona"),
+                    put.addColumn(data, Bytes.toBytes("ZONA"),
                             Bytes.toBytes(record.zona()));
-                    put.addColumn(data, Bytes.toBytes("total"),
+                    put.addColumn(data, Bytes.toBytes("TOTAL"),
                             Bytes.toBytes(record.precio()));
 
                     ventasPorZona.put(put);
@@ -184,16 +185,16 @@ package project.com.masterbd.Utiles;
                     put = new Put(Bytes.toBytes(fechaRow + record.cadena()+record.modelo()+record.clase()));
 
                     //columnFamily,column,value
-                    put.addColumn(data, Bytes.toBytes("fecha"),
+                    put.addColumn(data, Bytes.toBytes("FECHA"),
                             Bytes.toBytes(record.fecha()));
-                    put.addColumn(data, Bytes.toBytes("cadena"),
+                    put.addColumn(data, Bytes.toBytes("CADENA"),
                             Bytes.toBytes(record.cadena()));
-                    put.addColumn(data, Bytes.toBytes("clase"),
+                    put.addColumn(data, Bytes.toBytes("CLASE"),
                             Bytes.toBytes(record.clase()));
-                    put.addColumn(data, Bytes.toBytes("modelo"),
+                    put.addColumn(data, Bytes.toBytes("MODELO"),
                             Bytes.toBytes(record.modelo()));
-                    put.addColumn(data, Bytes.toBytes("cantidad"),
-                            Bytes.toBytes(record.precio()));
+                    put.addColumn(data, Bytes.toBytes("CANTIDAD"),
+                            Bytes.toBytes((record.precio())));
 
                     topPrendas.put(put);
                     break;
@@ -202,11 +203,11 @@ package project.com.masterbd.Utiles;
                     put = new Put(Bytes.toBytes(fechaRow + record.color()));
 
                     //columnFamily,column,value
-                    put.addColumn(data, Bytes.toBytes("fecha"),
+                    put.addColumn(data, Bytes.toBytes("FECHA"),
                             Bytes.toBytes(record.fecha()));
-                    put.addColumn(data, Bytes.toBytes("color"),
+                    put.addColumn(data, Bytes.toBytes("COLOR"),
                             Bytes.toBytes(record.color()));
-                    put.addColumn(data, Bytes.toBytes("cantidad"),
+                    put.addColumn(data, Bytes.toBytes("CANTIDAD"),
                             Bytes.toBytes(record.precio()));
 
                     topColores.put(put);

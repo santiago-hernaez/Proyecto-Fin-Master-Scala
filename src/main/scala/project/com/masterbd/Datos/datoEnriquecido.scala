@@ -1,5 +1,6 @@
 package project.com.masterbd.Datos
 
+
 /**
   * Enriched object with Redis data.
   */
