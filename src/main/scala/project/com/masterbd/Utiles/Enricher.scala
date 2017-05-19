@@ -43,7 +43,7 @@ class Enricher extends RichFlatMapFunction[original,enriquecido] {
     val fechaOriginal = new Date(origen.fecha*1000L).toString()
     var formatter: DateFormat = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy")
     var dat = formatter.parse(fechaOriginal)
-    val fecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss[.SSSSSSSSS]").format(dat)
+    val fecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(dat)
 
 
 
@@ -69,8 +69,8 @@ class Enricher extends RichFlatMapFunction[original,enriquecido] {
     val zona = jedis.hget(id_tienda, "zona")
 
     //clothes data. We pull one set of values for each element on the clothes array.
-    for (x <- 0 until (num_prendas-1)) {
-      val id_transaccion = origen.id_transaction*10+x
+    for (x <- 0 until (num_prendas)) {
+      val id_transaccion = (origen.id_transaction*10)+x
       val prenda = prendas(x).split(":")(0)
       val precio = prendas(x).split(":")(1).toDouble
       val beneficio: Double = jedis.hget(prenda, "ben").toDouble
