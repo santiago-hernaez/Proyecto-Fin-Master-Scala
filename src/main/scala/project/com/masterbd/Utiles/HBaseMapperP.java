@@ -116,6 +116,8 @@ public class HBaseMapperP implements HBaseMapper<datoEnriquecido.enriquecido>{
                             Bytes.toBytes(value.fecha()));
                     mutActions.addPut(data, Bytes.toBytes("ZONA"),
                             Bytes.toBytes(value.zona()));
+                    mutActions.addPut(data, Bytes.toBytes("PAIS"),
+                            Bytes.toBytes(value.pais()));
                     mutActions.addPut(data, Bytes.toBytes("TOTAL"),
                             Bytes.toBytes(value.precio()));
                     break;

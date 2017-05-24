@@ -105,3 +105,4 @@ class Enricher extends RichFlatMapFunction[original,enriquecido] {
   }
 
 }
+

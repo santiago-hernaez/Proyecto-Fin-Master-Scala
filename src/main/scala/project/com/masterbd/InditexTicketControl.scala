@@ -22,7 +22,7 @@ package project.com.masterbd
 
 import project.com.masterbd.Datos.datoOriginal.original
 import project.com.masterbd.Datos.datoEnriquecido.enriquecido
-import project.com.masterbd.Utiles.{Enricher, HBaseMapperP, HBaseSink, toHbase}
+import project.com.masterbd.Utiles.{Enricher, HBaseMapperP, HBaseSink}
 import project.com.masterbd.Datos.datoEnriquecido
 import java.util
 import java.util.Properties
@@ -35,9 +35,6 @@ import org.apache.flink.streaming.util.serialization.JSONDeserializationSchema
 import org.apache.flink.streaming.api.windowing.assigners.{SlidingProcessingTimeWindows, TumblingProcessingTimeWindows}
 import org.apache.flink.streaming.api.windowing.time.Time
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
-
-
-
 
 object InditexTicketControl extends App{
 
@@ -61,10 +58,7 @@ object InditexTicketControl extends App{
            //Enriches Json with Redis Data.
            .flatMap(new Enricher())
 
-        //streamEnriquecido.print()
-
         //Save enriched data to Hbase.
-
          streamEnriquecido.addSink(new HBaseSink("INDITEXTABLE",new HBaseMapperP()))
 
       // STARTING DATA CALCULATION
@@ -98,7 +92,6 @@ object InditexTicketControl extends App{
 
             storesales
              .map(r=>datoEnriquecido.enriquecido ("VENTASPORTIENDA",0,r._2,"",r._3,r._4,r._5,r._6,r._7,r._8,"",r._9,0D,"","","","",""))
-             //.writeUsingOutputFormat(new toHbase())
              .addSink(new HBaseSink("VENTASPORTIENDA",new HBaseMapperP()))
 
 
@@ -127,7 +120,6 @@ object InditexTicketControl extends App{
               // Save everything onto Hbase. I use id_transaccion to pass the agregate (int)
               clothesSales
               .map(r=>datoEnriquecido.enriquecido(r._1,r._6,r._2,"","",r._3,"","","","","",0D,0D,"","","",r._5,r._4))
-              //.writeUsingOutputFormat(new toHbase())
               .addSink(new HBaseSink("TOPPRENDAS",new HBaseMapperP()))
 
         // TOP 5 colours sold last hour: Window (1h,30'')
@@ -151,20 +143,18 @@ object InditexTicketControl extends App{
                 .print()
               */
 
-              // save all data onto Hbase.
+              // save all data onto Hbase. (older with .writeUsingOutputFormat(new toHbase() now with sink)
               colorSales
               .map(r=>datoEnriquecido.enriquecido(r._1,r._4,r._2,"","","","","","","","",0D,0D,r._3,"","","",""))
-              //.writeUsingOutputFormat(new toHbase())
               .addSink(new HBaseSink("TOPCOLORES",new HBaseMapperP()))
 
 
-         // Total sales per Zone (Asia, Latinoamerica, Europa) window (1h) TODO: Set to 1 minute to test, change to 1 hour.
+         // Total sales per Zone (Asia, Latinoamerica, Europa) window (1h)
 
-          streamEnriquecido.map(r=>("VENTASPORZONA",r.fecha,r.zona,r.precio))
-            .keyBy(_._3).window(TumblingProcessingTimeWindows.of(Time.minutes(1)))
-            .reduce{(a,b)=>(a._1,b._2,a._3,a._4+b._4)}
-            .map(r=>datoEnriquecido.enriquecido (r._1,0,r._2,"","","","","","",r._3,"",r._4,0D,"","","","",""))
-            //.writeUsingOutputFormat(new toHbase())
+          streamEnriquecido.map(r=>("VENTASPORZONA",r.fecha,r.zona,r.pais,r.precio))
+            .keyBy(_._3).window(TumblingProcessingTimeWindows.of(Time.minutes(60)))
+            .reduce{(a,b)=>(a._1,b._2,a._3,a._4,a._5+b._5)}
+            .map(r=>datoEnriquecido.enriquecido (r._1,0,r._2,"","","","",r._4,"",r._3,"",r._5,0D,"","","","",""))
             .addSink(new HBaseSink("VENTASPORZONA",new HBaseMapperP()))
 /*
         // Total Sales per brand: Window (1h)
@@ -173,8 +163,8 @@ object InditexTicketControl extends App{
           .keyBy(_._3).window(TumblingProcessingTimeWindows.of(Time.minutes(1)))
           .reduce{(a,b)=>(a._1,b._2,a._3,a._4+b._4)}
           .map(r=>new datoEnriquecido.enriquecido (r._1,0,r._2,"","",r._3,"","","","","",r._4,0D,"","","","",""))
-          //.writeUsingOutputFormat(new toHbase())
           .addSink(new HBaseSink("VENTASPORCADENA",new HBaseMapperP()))
 */
+
         env.execute("Scala-Flink Ticket Control")
 }
