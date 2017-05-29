@@ -17,7 +17,7 @@ package project.com.masterbd
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * mvn clean package -Pbuild-jar
+ *  mvn clean package -Pbuild-jar
  */
 
 import project.com.masterbd.Datos.datoOriginal.original
@@ -156,15 +156,15 @@ object InditexTicketControl extends App{
             .reduce{(a,b)=>(a._1,b._2,a._3,a._4,a._5+b._5)}
             .map(r=>datoEnriquecido.enriquecido (r._1,0,r._2,"","","","",r._4,"",r._3,"",r._5,0D,"","","","",""))
             .addSink(new HBaseSink("VENTASPORZONA",new HBaseMapperP()))
-/*
+
         // Total Sales per brand: Window (1h)
 
           streamEnriquecido.map(r=>("VENTASPORCADENA",r.fecha,r.cadena,r.precio))
-          .keyBy(_._3).window(TumblingProcessingTimeWindows.of(Time.minutes(1)))
+          .keyBy(_._3).window(TumblingProcessingTimeWindows.of(Time.minutes(60)))
           .reduce{(a,b)=>(a._1,b._2,a._3,a._4+b._4)}
           .map(r=>new datoEnriquecido.enriquecido (r._1,0,r._2,"","",r._3,"","","","","",r._4,0D,"","","","",""))
           .addSink(new HBaseSink("VENTASPORCADENA",new HBaseMapperP()))
-*/
+
 
         env.execute("Scala-Flink Ticket Control")
 }
