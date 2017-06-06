@@ -14,15 +14,13 @@ import org.flinkspector.core.quantify.OutputMatcher;
 import org.flinkspector.datastream.DataStreamTestBase;
 
 import static org.hamcrest.Matchers.*;
-//import static org.hamcrest.Matcher.greaterThan;
-//import static org.hamcrest.Matcher.is;
-/**
- * Created by sam on 29/05/17.
- */
+
 public class ticketControlTest extends DataStreamTestBase {
 
 /* Para el conjunto de valores dados, confirmamos que el precio total debe ser 807.62 */
-
+/* Confirmamos que no hay mas de 2 de cada color */
+/* Y confirmamos que no hay mas de 1 prenda de cada tipo, modelo y cadena. */
+    
     public static DataStream<Tuple18<String, Integer, String, String, Integer, String, String, String, String, String, Integer, Double, Double, String, String, String, String, String>> ventasPorTienda(DataStream<Tuple18<String, Integer, String, String, Integer, String, String, String, String, String, Integer, Double, Double, String, String, String, String, String>> stream) {
         return stream.timeWindowAll(Time.of(20, seconds))
                 .sum(11);
@@ -45,11 +43,10 @@ public class ticketControlTest extends DataStreamTestBase {
         OutputMatcher<Tuple18<String, Integer, String, String, Integer, String, String, String, String, String, Integer, Double, Double, String, String, String, String, String>> matcher =
                 //name the values in the tuple with keys:
                 new MatchTuples<Tuple18<String, Integer, String, String, Integer, String, String, String, String, String, Integer, Double, Double, String, String, String, String, String>>("destino", "id_transaccion", "fecha", "metodoPago", "id_tienda", "cadena", "sexo", "pais", "region", "zona", "id_prenda", "precio", "beneficio", "color", "talla", "nombre", "modelo", "clase")
-                        //add an assertion using a value and hamcrest matchers
+                        //Confirm the price sum is what it should be.
                         .assertThat("precio", is(807.62))
+                        //Confirm there are no strange payment methods.
                         .assertThat("metodoPago", either(is("App")).or(is("Credito")).or(is("Efectivo")).or(is("Affinity")))
-                        //express how many matchers must return true for your test to pass:
-                        //.anyOfThem()
                         //define how many records need to fulfill the condition
                         .onEachRecord();
 
@@ -69,7 +66,6 @@ public class ticketControlTest extends DataStreamTestBase {
             return stream
                     .map(new mapea18a4())
                     .keyBy(2)
-                    //.window(SlidingProcessingTimeWindows.of(Time.hours(1), Time.seconds(30)))
                     //agregate purchases per color
                     .reduce(new ReduceFunction<Tuple4<String, String, String, Integer>>() {
                         public Tuple4<String, String, String, Integer> reduce(Tuple4<String, String, String, Integer> a, Tuple4<String, String, String, Integer> b) {
@@ -94,11 +90,10 @@ public class ticketControlTest extends DataStreamTestBase {
             OutputMatcher<Tuple4<String, String, String, Integer>> matcher =
                     //name the values in the tuple with keys:
                     new MatchTuples<Tuple4<String, String, String, Integer>>("destino", "fecha", "color", "cantidad")
-                            //add an assertion using a value and hamcrest matchers
+                            //Shouldn't be more than 2 of the same color.
                             .assertThat("cantidad", lessThan(3))
+                            //Confirm that there are no strange colors on the list.
                             .assertThat("color", either(is("Marron")).or(is("Coral")).or(is("Granate")).or(is("Negro")).or(is("Beige")).or(is("Rosa")))
-                            //express how many matchers must return true for your test to pass:
-                            //.anyOfThem()
                             //define how many records need to fulfill the condition
                             .onEachRecord();
 
@@ -143,9 +138,8 @@ public class ticketControlTest extends DataStreamTestBase {
         OutputMatcher<Tuple6<String,String,String, String, String, Integer>> matcher =
                 //name the values in the tuple with keys:
                 new MatchTuples<Tuple6<String,String,String, String, String, Integer>>("destino", "fecha", "cadena", "modelo","clase","cantidad")
-                        //add an assertion using a value and hamcrest matchers
+                        // Shouldn't be more than one of each peace of clothing.
                         .assertThat("cantidad", lessThanOrEqualTo(1))
-                        //.assertThat("color", either(is("Marron")).or(is("Coral")).or(is("Granate")).or(is("Negro")).or(is("Beige")).or(is("Rosa")))
                         //express how many matchers must return true for your test to pass:
                         //.anyOfThem()
                         //define how many records need to fulfill the condition
