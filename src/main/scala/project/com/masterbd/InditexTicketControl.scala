@@ -152,7 +152,7 @@ object InditexTicketControl extends App{
          // Total sales per Zone (Asia, Latinoamerica, Europa) window (1h)
 
           streamEnriquecido.map(r=>("VENTASPORZONA",r.fecha,r.zona,r.pais,r.precio))
-            .keyBy(_._3).window(TumblingProcessingTimeWindows.of(Time.minutes(60)))
+            .keyBy(_._4).window(TumblingProcessingTimeWindows.of(Time.minutes(60)))
             .reduce{(a,b)=>(a._1,b._2,a._3,a._4,a._5+b._5)}
             .map(r=>datoEnriquecido.enriquecido (r._1,0,r._2,"","","","",r._4,"",r._3,"",r._5,0D,"","","","",""))
             .addSink(new HBaseSink("VENTASPORZONA",new HBaseMapperP()))

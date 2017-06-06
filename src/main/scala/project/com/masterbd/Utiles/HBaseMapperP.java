@@ -33,7 +33,7 @@ public class HBaseMapperP implements HBaseMapper<datoEnriquecido.enriquecido>{
                     rowKey =  Bytes.toBytes(fechaRow + value.cadena());
                 break;
                 case "VENTASPORZONA":
-                    rowKey =  Bytes.toBytes(fechaRow + value.zona());
+                    rowKey =  Bytes.toBytes(fechaRow + value.zona()+value.pais());
                 break;
                 case "TOPPRENDAS":
                     rowKey =  Bytes.toBytes(fechaRow + value.cadena()+value.modelo()+value.clase());
