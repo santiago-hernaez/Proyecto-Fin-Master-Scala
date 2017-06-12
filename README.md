@@ -1,5 +1,7 @@
 ## Master project - Big Data Architecture to manage sales tickets.
 
+Project documentation: https://github.com/santiago-hernaez/Proyecto-Fin-Master-Scala/blob/master/Arquitectura%20de%20an%C3%A1lisis%20de%20ventas%20de%20Inditex%20en%20tiempo%20real.pdf
+
 Scala project that receives purchase tickets and enriches them with data from Redis. The enriched data is processed to obtain KPIs and metrics and stored on Hbase.
 
 This project is based on Inditex world structure comprising 8 different branches (Zara, Oysho, Pull&Bear, Stradivarius, Bershka, Lefties, Uterqüe and Massimo Dutti) and a total of 7984 stores around the world.
